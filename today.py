@@ -149,6 +149,56 @@ def stars_counter(data):
     return total
 
 
+# Paths/extensions that are generated, vendored, or binary — i.e. NOT hand-written
+# source. Mirrors the categories GitHub Linguist excludes. Lines in these files are
+# not counted toward "lines of code you wrote".
+GENERATED_DIRS = (
+    "node_modules/", "/dist/", "/build/", "/out/", "/.next/", "/vendor/",
+    "/venv/", "/.venv/", "/__pycache__/", "/bower_components/", "/target/",
+    "/coverage/", "/.cache/", "/migrations/",
+)
+GENERATED_FILES = (
+    "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "composer.lock",
+    "gemfile.lock", "poetry.lock", "cargo.lock", "go.sum", "pipfile.lock",
+)
+GENERATED_EXT = (
+    ".min.js", ".min.css", ".map", ".lock",
+    ".png", ".jpg", ".jpeg", ".gif", ".ico", ".svg", ".webp", ".bmp",
+    ".pdf", ".zip", ".gz", ".tar", ".mp4", ".mov", ".webm", ".mp3",
+    ".woff", ".woff2", ".ttf", ".eot", ".otf",
+    ".snap", ".pb.go",
+)
+
+
+def is_source_file(path):
+    """True if `path` looks like hand-written source (not generated/vendored/binary)."""
+    p = path.lower()
+    if p.startswith("node_modules/") or any(d in "/" + p for d in GENERATED_DIRS):
+        return False
+    if p.rsplit("/", 1)[-1] in GENERATED_FILES:
+        return False
+    if p.endswith(GENERATED_EXT):
+        return False
+    return True
+
+
+def commit_source_loc(owner, repo_name, sha):
+    """Additions/deletions in a commit, counting only real source files."""
+    QUERY_COUNT["recursive_loc"] += 1
+    response = requests.get(
+        "https://api.github.com/repos/{}/{}/commits/{}".format(owner, repo_name, sha),
+        headers=HEADERS,
+    )
+    if response.status_code != 200:
+        return 0, 0
+    add = dele = 0
+    for f in response.json().get("files", []):
+        if is_source_file(f.get("filename", "")):
+            add += f.get("additions", 0)
+            dele += f.get("deletions", 0)
+    return add, dele
+
+
 def recursive_loc(owner, repo_name, data, cache_comment, addition_total=0,
                   deletion_total=0, my_commits=0, cursor=None):
     """Paginate a repo's default-branch history, summing your +/- lines."""
@@ -164,6 +214,7 @@ def recursive_loc(owner, repo_name, data, cache_comment, addition_total=0,
                             edges {
                                 node {
                                     ... on Commit {
+                                        oid
                                         committedDate
                                         author { user { id } }
                                         deletions
@@ -197,8 +248,9 @@ def recursive_loc(owner, repo_name, data, cache_comment, addition_total=0,
         node = edge["node"]
         if node["author"]["user"] == OWNER_ID:
             my_commits += 1
-            addition_total += node["additions"]
-            deletion_total += node["deletions"]
+            add, dele = commit_source_loc(owner, repo_name, node["oid"])
+            addition_total += add
+            deletion_total += dele
 
     if history["edges"] == [] or not history["pageInfo"]["hasNextPage"]:
         return addition_total, deletion_total, my_commits
