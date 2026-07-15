@@ -1,17 +1,3 @@
-"""
-build_svgs.py — render dark_mode.svg and light_mode.svg in the Andrew6rant
-neofetch format: dot-leader right-aligned values, section divider rules, and a
-two-column GitHub Stats block.
-
-This module is the single source of truth for the card layout. Two entry points:
-
-    render_all(data)   -> write both SVGs with the given stats (called by today.py)
-    python build_svgs.py  -> render both SVGs with placeholder/zero stats (preview)
-
-The dot leaders are recomputed from the actual value lengths every render, so the
-columns stay aligned no matter how the live numbers change.
-"""
-
 from xml.sax.saxutils import escape
 
 ART_FILE = "ascii-art.txt"
@@ -28,12 +14,10 @@ INFO_FONT = 15
 WIDTH = 1000
 HEIGHT = 470
 
-# Character-grid widths (monospace). Values are right-aligned to these columns.
-PANEL_W = 60          # total width of the info panel, in characters
-LCOL_W = 42           # left column width in the two-column stats block
-REPOS_FIELD = 13      # sub-field for the Repos/Commits value before the "|"
+PANEL_W = 60
+LCOL_W = 42
+REPOS_FIELD = 13
 
-# ---- Static (editable) card text --------------------------------------------
 NAME_HEADER = "ahmed@mohammed"
 STATIC = {
     "OS": "Linux, Windows, Kali",
@@ -68,7 +52,6 @@ def _len(segs):
 
 
 def rjust(label, value_segs, width=PANEL_W):
-    """label + ': ' + dots + ' ' + value_segs, right-aligned to `width` chars."""
     left = [("key", label), ("cm", ":"), ("cm", " ")]
     right = [("cm", " ")] + value_segs
     dots = max(1, width - _len(left) - _len(right))
@@ -86,7 +69,6 @@ def section(title):
 
 
 def stats_rows(d):
-    # Row 1: Repos {Contributed} | Stars
     part1 = rjust("Repos", [("value", d["repos"])], REPOS_FIELD)
     contrib = [("cm", " {"), ("key", "Contributed"), ("cm", ": "),
                ("value", d["contrib"]), ("cm", "}")]
@@ -95,13 +77,11 @@ def stats_rows(d):
     right1 = rjust("Stars", [("value", d["stars"])], PANEL_W - LCOL_W)
     row1 = left1 + right1
 
-    # Row 2: Commits | Followers
     left2 = rjust("Commits", [("value", d["commits"])], REPOS_FIELD)
     left2 += [("cm", " " * max(1, LCOL_W - _len(left2)))]
     right2 = rjust("Followers", [("value", d["followers"])], PANEL_W - LCOL_W)
     row2 = left2 + right2
 
-    # Row 3: Lines of Code — total additions only (always positive)
     loc = [("value", d["loc_add"]), ("add", "++")]
     row3 = rjust("Lines of Code on GitHub", loc, PANEL_W)
     return [row1, row2, row3]
@@ -204,7 +184,6 @@ def _fmt(n):
 
 
 def render_all(data):
-    """data: age (str) + repos/contrib/stars/commits/followers/loc_net/loc_add/loc_del (ints)."""
     d = {
         "age": data.get("age", "XX years, XX months, XX days"),
         "repos": _fmt(data.get("repos", 0)),
@@ -222,5 +201,4 @@ def render_all(data):
 
 
 if __name__ == "__main__":
-    # Preview render with placeholder stats (Action fills real numbers later).
     render_all({"age": "22 years, 0 months, 9 days"})

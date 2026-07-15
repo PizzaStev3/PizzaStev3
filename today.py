@@ -1,29 +1,10 @@
-"""
-today.py — self-updating GitHub profile stats generator.
-
-Fetches live GitHub statistics via the GraphQL v4 API and injects them into
-dark_mode.svg and light_mode.svg (replacing the inner text of <tspan> elements
-by their id). Modelled on Andrew6rant/Andrew6rant.
-
-Environment variables (set as GitHub Actions secrets/vars):
-    ACCESS_TOKEN  fine-grained or classic PAT with read access to your repos
-    USER_NAME     your GitHub login, e.g. "PizzaStev3"
-
-Run locally:
-    ACCESS_TOKEN=ghp_xxx USER_NAME=PizzaStev3 python today.py
-"""
-
 import os
 import hashlib
 import datetime
 from dateutil import relativedelta
 import requests
 
-# ---------------------------------------------------------------------------
-# EDIT ME: your date of birth, used for the "Uptime" counter.
-# Format: datetime.datetime(YEAR, MONTH, DAY)
 BIRTHDAY = datetime.datetime(2004, 7, 6)
-# ---------------------------------------------------------------------------
 
 HEADERS = {"authorization": "token " + os.environ.get("ACCESS_TOKEN", "")}
 USER_NAME = os.environ.get("USER_NAME", "")
@@ -36,9 +17,25 @@ QUERY_COUNT = {
     "recursive_loc": 0,
 }
 
+GENERATED_DIRS = (
+    "node_modules/", "/dist/", "/build/", "/out/", "/.next/", "/vendor/",
+    "/venv/", "/.venv/", "/__pycache__/", "/bower_components/", "/target/",
+    "/coverage/", "/.cache/", "/migrations/",
+)
+GENERATED_FILES = (
+    "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "composer.lock",
+    "gemfile.lock", "poetry.lock", "cargo.lock", "go.sum", "pipfile.lock",
+)
+GENERATED_EXT = (
+    ".min.js", ".min.css", ".map", ".lock",
+    ".png", ".jpg", ".jpeg", ".gif", ".ico", ".svg", ".webp", ".bmp",
+    ".pdf", ".zip", ".gz", ".tar", ".mp4", ".mov", ".webm", ".mp3",
+    ".woff", ".woff2", ".ttf", ".eot", ".otf",
+    ".snap", ".pb.go",
+)
+
 
 def daily_readme(birthday):
-    """Return the age string, e.g. '22 years, 5 months, 29 days'."""
     diff = relativedelta.relativedelta(datetime.datetime.today(), birthday)
 
     def plural(unit):
@@ -52,7 +49,6 @@ def daily_readme(birthday):
 
 
 def simple_request(func_name, query, variables):
-    """POST a GraphQL query; raise on non-200."""
     response = requests.post(
         "https://api.github.com/graphql",
         json={"query": query, "variables": variables},
@@ -67,7 +63,6 @@ def simple_request(func_name, query, variables):
 
 
 def user_getter(username):
-    """Return (node id, account creation date)."""
     QUERY_COUNT["user_getter"] += 1
     query = """
     query($login: String!){
@@ -92,7 +87,6 @@ def follower_getter(username):
 
 
 def graph_commits(start_date, end_date):
-    """Total commit contributions in a date window (max ~1 year per call)."""
     QUERY_COUNT["graph_commits"] += 1
     query = """
     query($start_date: DateTime!, $end_date: DateTime!, $login: String!) {
@@ -112,7 +106,6 @@ def graph_commits(start_date, end_date):
 
 
 def graph_repos_stars(count_type, owner_affiliation, cursor=None):
-    """Count owned repos, or sum stargazers across owned repos."""
     QUERY_COUNT["graph_repos_stars"] += 1
     query = """
     query($owner_affiliation: [RepositoryAffiliation], $login: String!, $cursor: String) {
@@ -149,29 +142,7 @@ def stars_counter(data):
     return total
 
 
-# Paths/extensions that are generated, vendored, or binary — i.e. NOT hand-written
-# source. Mirrors the categories GitHub Linguist excludes. Lines in these files are
-# not counted toward "lines of code you wrote".
-GENERATED_DIRS = (
-    "node_modules/", "/dist/", "/build/", "/out/", "/.next/", "/vendor/",
-    "/venv/", "/.venv/", "/__pycache__/", "/bower_components/", "/target/",
-    "/coverage/", "/.cache/", "/migrations/",
-)
-GENERATED_FILES = (
-    "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "composer.lock",
-    "gemfile.lock", "poetry.lock", "cargo.lock", "go.sum", "pipfile.lock",
-)
-GENERATED_EXT = (
-    ".min.js", ".min.css", ".map", ".lock",
-    ".png", ".jpg", ".jpeg", ".gif", ".ico", ".svg", ".webp", ".bmp",
-    ".pdf", ".zip", ".gz", ".tar", ".mp4", ".mov", ".webm", ".mp3",
-    ".woff", ".woff2", ".ttf", ".eot", ".otf",
-    ".snap", ".pb.go",
-)
-
-
 def is_source_file(path):
-    """True if `path` looks like hand-written source (not generated/vendored/binary)."""
     p = path.lower()
     if p.startswith("node_modules/") or any(d in "/" + p for d in GENERATED_DIRS):
         return False
@@ -183,7 +154,6 @@ def is_source_file(path):
 
 
 def commit_source_loc(owner, repo_name, sha):
-    """Additions/deletions in a commit, counting only real source files."""
     QUERY_COUNT["recursive_loc"] += 1
     response = requests.get(
         "https://api.github.com/repos/{}/{}/commits/{}".format(owner, repo_name, sha),
@@ -201,7 +171,6 @@ def commit_source_loc(owner, repo_name, sha):
 
 def recursive_loc(owner, repo_name, data, cache_comment, addition_total=0,
                   deletion_total=0, my_commits=0, cursor=None):
-    """Paginate a repo's default-branch history, summing your +/- lines."""
     QUERY_COUNT["recursive_loc"] += 1
     query = """
     query ($repo_name: String!, $owner: String!, $cursor: String) {
@@ -236,7 +205,6 @@ def recursive_loc(owner, repo_name, data, cache_comment, addition_total=0,
         headers=HEADERS,
     )
     if response.status_code != 200:
-        # Empty repos / permission issues -> skip gracefully.
         return 0, 0, 0
 
     ref = response.json()["data"]["repository"]["defaultBranchRef"]
@@ -263,7 +231,6 @@ def recursive_loc(owner, repo_name, data, cache_comment, addition_total=0,
 
 def loc_query(owner_affiliation, comment_size=0, force_cache=False, cursor=None,
               edges=None):
-    """Collect every repo (with pagination) then tally lines of code via cache."""
     if edges is None:
         edges = []
     QUERY_COUNT["loc_query"] += 1
@@ -302,7 +269,6 @@ def loc_query(owner_affiliation, comment_size=0, force_cache=False, cursor=None,
 
 
 def cache_builder(edges, comment_size, force_cache, loc_add=0, loc_del=0):
-    """Read/write cache/<hash>.txt so unchanged repos aren't re-scanned."""
     cached = True
     filename = "cache/" + hashlib.sha256(USER_NAME.encode("utf-8")).hexdigest() + ".txt"
 
@@ -336,7 +302,6 @@ def cache_builder(edges, comment_size, force_cache, loc_add=0, loc_del=0):
                 total_commits = node["defaultBranchRef"]["target"]["history"]["totalCount"]
             except TypeError:
                 total_commits = 0
-            # Re-scan only when the commit count changed.
             if int(data[index].split()[2]) != total_commits:
                 owner, repo_name = node["nameWithOwner"].split("/")
                 loc = recursive_loc(owner, repo_name, data, cache_comment)
@@ -356,7 +321,6 @@ def cache_builder(edges, comment_size, force_cache, loc_add=0, loc_del=0):
 
 
 def flush_cache(edges, filename, comment_size):
-    """Rebuild the cache file from scratch (all repos marked dirty)."""
     with open(filename, "r") as f:
         data = []
         if comment_size > 0:
@@ -371,7 +335,6 @@ def flush_cache(edges, filename, comment_size):
 
 
 def commit_counter(comment_size):
-    """Read total 'my commits' out of the cache file (column 3)."""
     total = 0
     filename = "cache/" + hashlib.sha256(USER_NAME.encode("utf-8")).hexdigest() + ".txt"
     with open(filename, "r") as f:
@@ -382,13 +345,11 @@ def commit_counter(comment_size):
 
 
 if __name__ == "__main__":
-    print("Calculation times:")
     user_data, acc_date = user_getter(USER_NAME)
     OWNER_ID = user_data
 
     age_data = daily_readme(BIRTHDAY)
 
-    # Total commits across the account's lifetime, year by year.
     total_commits = 0
     start = datetime.datetime.fromisoformat(acc_date.replace("Z", "+00:00"))
     now = datetime.datetime.now(datetime.timezone.utc)
@@ -427,7 +388,5 @@ if __name__ == "__main__":
         "loc_del": loc_del,
     })
 
-    print("Total GitHub GraphQL API calls:", sum(QUERY_COUNT.values()))
-    for func, count in QUERY_COUNT.items():
-        print("   {:<18} {:>6}".format(func + ":", count))
+    print("Total GitHub API calls:", sum(QUERY_COUNT.values()))
     print("Done. dark_mode.svg and light_mode.svg updated.")

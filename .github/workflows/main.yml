@@ -2,11 +2,10 @@ name: Update Profile SVGs
 
 on:
   schedule:
-    # Runs daily at 00:17 UTC (offset from the top of the hour on purpose).
     - cron: "17 0 * * *"
   push:
     branches: [main]
-  workflow_dispatch:  # allows manual runs from the Actions tab
+  workflow_dispatch:
 
 permissions:
   contents: write
