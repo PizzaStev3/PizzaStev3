@@ -15,8 +15,6 @@ WIDTH = 1000
 HEIGHT = 470
 
 PANEL_W = 60
-LCOL_W = 42
-REPOS_FIELD = 13
 
 NAME_HEADER = "ahmed@mohammed"
 STATIC = {
@@ -69,19 +67,10 @@ def section(title):
 
 
 def stats_rows(d):
-    part1 = rjust("Repos", [("value", d["repos"])], REPOS_FIELD)
-    contrib = [("cm", " {"), ("key", "Contributed"), ("cm", ": "),
-               ("value", d["contrib"]), ("cm", "}")]
-    left1 = part1 + contrib
-    left1 += [("cm", " " * max(1, LCOL_W - _len(left1)))]
-    right1 = rjust("Stars", [("value", d["stars"])], PANEL_W - LCOL_W)
-    row1 = left1 + right1
-
-    left2 = rjust("Commits", [("value", d["commits"])], REPOS_FIELD)
-    left2 += [("cm", " " * max(1, LCOL_W - _len(left2)))]
-    right2 = rjust("Followers", [("value", d["followers"])], PANEL_W - LCOL_W)
-    row2 = left2 + right2
-
+    repos = [("value", d["repos"]), ("cm", " {"), ("key", "Contributed"),
+             ("cm", ": "), ("value", d["contrib"]), ("cm", "}")]
+    row1 = rjust("Repos", repos, PANEL_W)
+    row2 = rjust("Commits", [("value", d["commits"])], PANEL_W)
     loc = [("value", d["loc_add"]), ("add", "++")]
     row3 = rjust("Lines of Code on GitHub", loc, PANEL_W)
     return [row1, row2, row3]
@@ -188,12 +177,8 @@ def render_all(data):
         "age": data.get("age", "XX years, XX months, XX days"),
         "repos": _fmt(data.get("repos", 0)),
         "contrib": _fmt(data.get("contrib", 0)),
-        "stars": _fmt(data.get("stars", 0)),
         "commits": _fmt(data.get("commits", 0)),
-        "followers": _fmt(data.get("followers", 0)),
-        "loc_net": _fmt(data.get("loc_net", 0)),
         "loc_add": _fmt(data.get("loc_add", 0)),
-        "loc_del": _fmt(data.get("loc_del", 0)),
     }
     rows = build_rows(d)
     for name, pal in PALETTES.items():

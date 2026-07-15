@@ -10,8 +10,7 @@ HEADERS = {"authorization": "token " + os.environ.get("ACCESS_TOKEN", "")}
 USER_NAME = os.environ.get("USER_NAME", "")
 QUERY_COUNT = {
     "user_getter": 0,
-    "follower_getter": 0,
-    "graph_repos_stars": 0,
+    "graph_repos": 0,
     "graph_commits": 0,
     "loc_query": 0,
     "recursive_loc": 0,
@@ -76,16 +75,6 @@ def user_getter(username):
     return {"id": data["id"]}, data["createdAt"]
 
 
-def follower_getter(username):
-    QUERY_COUNT["follower_getter"] += 1
-    query = """
-    query($login: String!){
-        user(login: $login) { followers { totalCount } }
-    }"""
-    response = simple_request(follower_getter.__name__, query, {"login": username})
-    return int(response.json()["data"]["user"]["followers"]["totalCount"])
-
-
 def graph_commits(start_date, end_date):
     QUERY_COUNT["graph_commits"] += 1
     query = """
@@ -105,41 +94,19 @@ def graph_commits(start_date, end_date):
     )
 
 
-def graph_repos_stars(count_type, owner_affiliation, cursor=None):
-    QUERY_COUNT["graph_repos_stars"] += 1
+def graph_repos(owner_affiliation):
+    QUERY_COUNT["graph_repos"] += 1
     query = """
-    query($owner_affiliation: [RepositoryAffiliation], $login: String!, $cursor: String) {
+    query($owner_affiliation: [RepositoryAffiliation], $login: String!) {
         user(login: $login) {
-            repositories(first: 100, after: $cursor, ownerAffiliations: $owner_affiliation) {
+            repositories(ownerAffiliations: $owner_affiliation) {
                 totalCount
-                edges {
-                    node {
-                        stargazers { totalCount }
-                    }
-                }
-                pageInfo { endCursor hasNextPage }
             }
         }
     }"""
-    variables = {
-        "owner_affiliation": owner_affiliation,
-        "login": USER_NAME,
-        "cursor": cursor,
-    }
-    response = simple_request(graph_repos_stars.__name__, query, variables)
-    repos = response.json()["data"]["user"]["repositories"]
-    if count_type == "repos":
-        return repos["totalCount"]
-    if count_type == "stars":
-        return stars_counter(repos["edges"])
-    return 0
-
-
-def stars_counter(data):
-    total = 0
-    for node in data:
-        total += node["node"]["stargazers"]["totalCount"]
-    return total
+    variables = {"owner_affiliation": owner_affiliation, "login": USER_NAME}
+    response = simple_request(graph_repos.__name__, query, variables)
+    return response.json()["data"]["user"]["repositories"]["totalCount"]
 
 
 def is_source_file(path):
@@ -363,29 +330,21 @@ if __name__ == "__main__":
         )
         window_start = window_end
 
-    star_data = graph_repos_stars("stars", ["OWNER"])
-    repo_data = graph_repos_stars("repos", ["OWNER"])
-    contrib_data = graph_repos_stars(
-        "repos", ["OWNER", "COLLABORATOR", "ORGANIZATION_MEMBER"]
-    )
-    follower_data = follower_getter(USER_NAME)
+    repo_data = graph_repos(["OWNER"])
+    contrib_data = graph_repos(["OWNER", "COLLABORATOR", "ORGANIZATION_MEMBER"])
 
     total_loc = loc_query(
         ["OWNER", "COLLABORATOR", "ORGANIZATION_MEMBER"], comment_size=0
     )
-    loc_add, loc_del, loc_net = total_loc[0], total_loc[1], total_loc[2]
+    loc_add = total_loc[0]
 
     import build_svgs
     build_svgs.render_all({
         "age": age_data,
         "repos": repo_data,
         "contrib": contrib_data,
-        "stars": star_data,
         "commits": total_commits,
-        "followers": follower_data,
-        "loc_net": loc_net,
         "loc_add": loc_add,
-        "loc_del": loc_del,
     })
 
     print("Total GitHub API calls:", sum(QUERY_COUNT.values()))
