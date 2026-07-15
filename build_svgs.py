@@ -100,10 +100,8 @@ def stats_rows(d):
     right2 = rjust("Followers", [("value", d["followers"])], PANEL_W - LCOL_W)
     row2 = left2 + right2
 
-    # Row 3: Lines of Code (net) ( additions++, deletions-- )
-    loc = [("value", d["loc_net"]), ("cm", " ( "), ("add", d["loc_add"]),
-           ("add", "++"), ("cm", ", "), ("del", d["loc_del"]), ("del", "--"),
-           ("cm", " )")]
+    # Row 3: Lines of Code — total additions only (always positive)
+    loc = [("value", d["loc_add"]), ("add", "++")]
     row3 = rjust("Lines of Code on GitHub", loc, PANEL_W)
     return [row1, row2, row3]
 
