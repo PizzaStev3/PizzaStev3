@@ -1,12 +1,12 @@
 from xml.sax.saxutils import escape
 
 ART_FILE = "ascii-art.txt"
-ART_FONT = 6
-ART_LINE = 6.8
+ART_FONT = 7
+ART_LINE = 7.9
 ART_X = 14
 ART_Y = 16
 
-INFO_X = 390
+INFO_X = 445
 INFO_START_Y = 30
 INFO_LINE_H = 20
 INFO_FONT = 15
