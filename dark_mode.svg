@@ -1,0 +1,98 @@
+<svg width="1000" height="470" viewBox="0 0 1000 470" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    svg { font-family: 'Consolas', 'Menlo', 'DejaVu Sans Mono', 'Courier New', monospace; }
+    text { fill: #c9d1d9; }
+    .ascii { fill: #7d8590; white-space: pre; }
+    .key { fill: #ffa657; }
+    .value { fill: #a5d6ff; }
+    .add { fill: #3fb950; }
+    .del { fill: #f85149; }
+    .cm  { fill: #8b949e; }
+    .dots { fill: #484f58; }
+    .rule { fill: #484f58; }
+    .sec { fill: #c9d1d9; }
+    .fadein { font-size: 15px; opacity: 0; animation: fadeIn 0.5s ease-in-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+  <rect x="0" y="0" width="1000" height="470" rx="6" fill="#161b22" />
+
+  <text class="ascii" x="14" y="16" xml:space="preserve" font-size="6px">
+    <tspan x="14" dy="0">            ........................::::--====+++++++++++====--:::::................          </tspan>
+    <tspan x="14" dy="6.8">                ........-+#@@@%%##************************************************##%%:...          </tspan>
+    <tspan x="14" dy="6.8">             .....-%@#****************************************************************#+..          </tspan>
+    <tspan x="14" dy="6.8">             ....#-:::*****************************************************************%..          </tspan>
+    <tspan x="14" dy="6.8">             ...+=:::::#***************************************************************#..          </tspan>
+    <tspan x="14" dy="6.8">             ...*-:::::=%***************************************************************..          </tspan>
+    <tspan x="14" dy="6.8">             ...==:::::-@**************%%##**##%%#**%#++++++*%%*#%#*****#%%**##%##*****...          </tspan>
+    <tspan x="14" dy="6.8">             ....%:::::=%*%%+========*+=============**===========#+=========+*=====##:....          </tspan>
+    <tspan x="14" dy="6.8">              ...:%-:::%%================================-==========================#:.             </tspan>
+    <tspan x="14" dy="6.8">             ......-#%=############==============+%@@%*===========+%@@@@#+==========+=.             </tspan>
+    <tspan x="14" dy="6.8">              . .....#:#############*=========*#===========================++=======*:....          </tspan>
+    <tspan x="14" dy="6.8">       ...............*-@#############+++++++++++++++********************########%%%@###%:          </tspan>
+    <tspan x="14" dy="6.8">       ..:=+*#%%@@@@@@@@@@@@@@@@@@@@@@@@@@*:......-@@@@@@@@@@@@@@@@@@#-.......=@@@@@@@@@@:          </tspan>
+    <tspan x="14" dy="6.8">  ...:#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#.......-@@@@@@@@@@@@@@@@@@@-......*@@@@@@@@@.          </tspan>
+    <tspan x="14" dy="6.8">...=@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#.......+@@@@@@@@@@@@@@@@@@*......#@@@@@@@@%.          </tspan>
+    <tspan x="14" dy="6.8">..%@@@@@@@@@+:...      ..++=%######@@@@@@@@@@@.......#@@@@@@@@@@@@@@@@@@=.....#@@@@@@@@@-.          </tspan>
+    <tspan x="14" dy="6.8">:@@@@@@@@*.......      ...++-%######@@@@@@@@@-.....-@@@@@@@@@@@@@@@@@@@@....:@@@@@@@@@@%..          </tspan>
+    <tspan x="14" dy="6.8">+@@@@@@@=...           ....===%####+#@@@@@@@-....-@@@@@@@@@@@@@#@@@@@@@+....=@@@@@@@@@@-..          </tspan>
+    <tspan x="14" dy="6.8">-@@@@@@-..                ..++=%*====%@@@@@@:....-%@@@@@@@@@@@*==@@@@@@@*-....-*@@@@@@=             </tspan>
+    <tspan x="14" dy="6.8">..=*+-.                    ..+==*=====#@@@@@@@#+-:...:-+@@@@@=====#@@@@@@@@@@#=..:%@@-.             </tspan>
+    <tspan x="14" dy="6.8">.......                    ...+-#=======%@@@@@@@@@@@@#-..-%+========#@@@@@@@@@@@#.*=...             </tspan>
+    <tspan x="14" dy="6.8">                            ...+%=========+%@@@@@@@@@@@*================*%@@@@%*-....               </tspan>
+    <tspan x="14" dy="6.8">                           .....*==*===================-#====================#... ....              </tspan>
+    <tspan x="14" dy="6.8">                           .....*=*-*+==*=*==========++=**====*#======+++==++....                   </tspan>
+    <tspan x="14" dy="6.8">                           .......+-:*==++*=+==*===================*#######:.....                   </tspan>
+    <tspan x="14" dy="6.8">                           ........*--+=+====++===================########%......                   </tspan>
+    <tspan x="14" dy="6.8">                                ....*#%=*%%%%%%%%%%@%%%-:*###%*:*##@%%%%%%+.                        </tspan>
+    <tspan x="14" dy="6.8">                                 ....#%%%%%%%%%%%%%@%###*:.*#+.+%##%%%%%%#..                        </tspan>
+    <tspan x="14" dy="6.8">                                 .  ..%%%@%%%%%%%%%%%%%##*+###*%###@%%%%@:..                        </tspan>
+    <tspan x="14" dy="6.8">                                     ..%%%@%%%%%%%%%%@%###%###%##%%%%%%%-...                        </tspan>
+    <tspan x="14" dy="6.8">                                     ...%%%@%%%%%%%%%%%%###%%###@%%%%%%=....                        </tspan>
+    <tspan x="14" dy="6.8">                                     ...-@%%@%%%%%%%%%%%%%%%%%%%%%%%%%%.....                        </tspan>
+    <tspan x="14" dy="6.8">                                     ..*%%%%%@%%%%%%%%%%%%%%%%%%%%%%%@%%-...                        </tspan>
+    <tspan x="14" dy="6.8">                                ......%%%@-%%%@%%%%%%%%%%%%%%@%%%%%%@#%%@-..                        </tspan>
+    <tspan x="14" dy="6.8">                                .....%%%%:.:@%%@%%%%%%%%%%%**@%%%%%%=.@%%%..                        </tspan>
+    <tspan x="14" dy="6.8">                                ....+%%%*....%%%@%%%%%%%%%%%%%%%%%%#..+%%%=.                        </tspan>
+    <tspan x="14" dy="6.8">                                ....%%%%......%%%@%%%%%%%%%%%%%%%%%...-%%%%.                        </tspan>
+    <tspan x="14" dy="6.8">                                ...*%%%+......:@%%@%%%%%%%%%%%%%%%=...:@%%%:..                      </tspan>
+    <tspan x="14" dy="6.8">                                ...%%%%-... ....%%%@@@@@@@@@@%@@@=... .@%%%-..                      </tspan>
+    <tspan x="14" dy="6.8">                                ..:%%%@-...   ...#%%@%%%%%%%%%%%+..   .@%%%=..                      </tspan>
+    <tspan x="14" dy="6.8">                                ..:%%%@-...   ....#%%@%%%%%%%%%#...  ..+**#:..                      </tspan>
+    <tspan x="14" dy="6.8">                                ...###%....   .....%%%@%%%%%%%@-........+++.                        </tspan>
+    <tspan x="14" dy="6.8">                                ...==::-*..    ....@%%%%%%%%%%%%.....+#-:-=.                        </tspan>
+    <tspan x="14" dy="6.8">                                ..:-:-:*==.    ...:%%%%%%%%%%@%%*....+=-::*.                        </tspan>
+    <tspan x="14" dy="6.8">                                ..=-++--...   ....=%%%=%%%%%=#%%%....-===+*.                        </tspan>
+    <tspan x="14" dy="6.8">                                ...**=+=...   ....+%%%-......+%%%-...-++=:..                        </tspan>
+    <tspan x="14" dy="6.8">                                   .....       ...%%%%-..   .=%%%*.                                 </tspan>
+    <tspan x="14" dy="6.8">                                               ..:@%%%:..   .=%%%#.                                 </tspan>
+    <tspan x="14" dy="6.8">                                              ...=%%%%...   .+%%%%...                               </tspan>
+    <tspan x="14" dy="6.8">                                              ...#%%%%...    #%%%%...                               </tspan>
+    <tspan x="14" dy="6.8">                                               ..%%%%#...  ..@%%%%.....                             </tspan>
+    <tspan x="14" dy="6.8">                                               .=%%%%*...  .:@%%%#.....                             </tspan>
+    <tspan x="14" dy="6.8">                                              ...+-=+....  ..%:=+-:....                             </tspan>
+    <tspan x="14" dy="6.8">                                              ..+=---=++. ..:*::::-*...                             </tspan>
+    <tspan x="14" dy="6.8">                                              ..++:::::==. ..=###%#-...                             </tspan>
+    <tspan x="14" dy="6.8">                                              ......:::..   ...........                             </tspan>
+    <tspan x="14" dy="6.8"></tspan>
+  </text>
+
+  <g>
+    <text class="fadein" x="390" y="30" style="animation-delay:0.08s" xml:space="preserve"><tspan class="key">ahmed@mohammed</tspan><tspan class="cm"> </tspan><tspan class="rule">─────────────────────────────────────────────</tspan></text>
+    <text class="fadein" x="390" y="50" style="animation-delay:0.12s" xml:space="preserve"><tspan class="key">OS</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">...................................</tspan><tspan class="cm"> </tspan><tspan class="value">Linux, Windows, Kali</tspan></text>
+    <text class="fadein" x="390" y="70" style="animation-delay:0.15s" xml:space="preserve"><tspan class="key">Uptime</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">.........................</tspan><tspan class="cm"> </tspan><tspan class="value">22 years, 0 months, 9 days</tspan></text>
+    <text class="fadein" x="390" y="90" style="animation-delay:0.19s" xml:space="preserve"><tspan class="key">Host</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">..</tspan><tspan class="cm"> </tspan><tspan class="value">October University for Modern Sciences &amp; Arts - MSA</tspan></text>
+    <text class="fadein" x="390" y="110" style="animation-delay:0.22s" xml:space="preserve"><tspan class="key">Skills</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">..........................</tspan><tspan class="cm"> </tspan><tspan class="value">Web App Pentesting, OSINT</tspan></text>
+    <text class="fadein" x="390" y="150" style="animation-delay:0.26s" xml:space="preserve"><tspan class="key">Languages.Programming</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">.........................</tspan><tspan class="cm"> </tspan><tspan class="value">Python, C++</tspan></text>
+    <text class="fadein" x="390" y="170" style="animation-delay:0.29s" xml:space="preserve"><tspan class="key">Languages.Markup</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">......................</tspan><tspan class="cm"> </tspan><tspan class="value">HTML, CSS, Markdown</tspan></text>
+    <text class="fadein" x="390" y="190" style="animation-delay:0.33s" xml:space="preserve"><tspan class="key">Languages.Real</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">............................</tspan><tspan class="cm"> </tspan><tspan class="value">English, Arabic</tspan></text>
+    <text class="fadein" x="390" y="230" style="animation-delay:0.36s" xml:space="preserve"><tspan class="key">Hobbies.Security</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">......................</tspan><tspan class="cm"> </tspan><tspan class="value">CTFs, Reading Blogs</tspan></text>
+    <text class="fadein" x="390" y="250" style="animation-delay:0.40s" xml:space="preserve"><tspan class="key">Hobbies.Software</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">..................</tspan><tspan class="cm"> </tspan><tspan class="value">AI Security, Automation</tspan></text>
+    <text class="fadein" x="390" y="290" style="animation-delay:0.43s" xml:space="preserve"><tspan class="rule">─ </tspan><tspan class="sec">Contact</tspan><tspan class="cm"> </tspan><tspan class="rule">──────────────────────────────────────────────────</tspan></text>
+    <text class="fadein" x="390" y="310" style="animation-delay:0.47s" xml:space="preserve"><tspan class="key">LinkedIn</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">...................................</tspan><tspan class="cm"> </tspan><tspan class="value">ahmed-mohamm3d</tspan></text>
+    <text class="fadein" x="390" y="330" style="animation-delay:0.50s" xml:space="preserve"><tspan class="key">Discord</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">........................................</tspan><tspan class="cm"> </tspan><tspan class="value">pizzast3ve</tspan></text>
+    <text class="fadein" x="390" y="370" style="animation-delay:0.54s" xml:space="preserve"><tspan class="rule">─ </tspan><tspan class="sec">GitHub Stats</tspan><tspan class="cm"> </tspan><tspan class="rule">─────────────────────────────────────────────</tspan></text>
+    <text class="fadein" x="390" y="390" style="animation-delay:0.57s" xml:space="preserve"><tspan class="key">Repos</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">....</tspan><tspan class="cm"> </tspan><tspan class="value">0</tspan><tspan class="cm"> {</tspan><tspan class="key">Contributed</tspan><tspan class="cm">: </tspan><tspan class="value">0</tspan><tspan class="cm">}</tspan><tspan class="cm">            </tspan><tspan class="key">Stars</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">.........</tspan><tspan class="cm"> </tspan><tspan class="value">0</tspan></text>
+    <text class="fadein" x="390" y="410" style="animation-delay:0.61s" xml:space="preserve"><tspan class="key">Commits</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">..</tspan><tspan class="cm"> </tspan><tspan class="value">0</tspan><tspan class="cm">                             </tspan><tspan class="key">Followers</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">.....</tspan><tspan class="cm"> </tspan><tspan class="value">0</tspan></text>
+    <text class="fadein" x="390" y="430" style="animation-delay:0.64s" xml:space="preserve"><tspan class="key">Lines of Code on GitHub</tspan><tspan class="cm">:</tspan><tspan class="cm"> </tspan><tspan class="dots">....................</tspan><tspan class="cm"> </tspan><tspan class="value">0</tspan><tspan class="cm"> ( </tspan><tspan class="add">0</tspan><tspan class="add">++</tspan><tspan class="cm">, </tspan><tspan class="del">0</tspan><tspan class="del">--</tspan><tspan class="cm"> )</tspan></text>
+  </g>
+</svg>
